@@ -1,0 +1,44 @@
+<RCC>
+    <qresource prefix="/">
+        <file>images/opening/5.png</file>
+        <file>images/opening/4.png</file>
+        <file>images/opening/3.png</file>
+        <file>images/opening/2.png</file>
+        <file>images/opening/1.png</file>
+        <file>images/zoom_out.png</file>
+        <file>images/zoom_in.png</file>
+        <file>images/info.png</file>
+        <file>images/icon-up.png</file>
+        <file>images/icon-settings.png</file>
+        <file>images/icon-go.png</file>
+        <file>images/icon-down.png</file>
+        <file>images/icon-back.png</file>
+        <file>images/CSIC.png</file>
+        <file>images/icons/icon96x96.png</file>
+        <file>images/icons/icon72x72.png</file>
+        <file>images/icons/icon48x48.png</file>
+        <file>qml_local/main.qml</file>
+        <file>qml_local/PageUtility.qml</file>
+        <file>qml_local/PageHome.qml</file>
+        <file>qml_local/PageGIS.qml</file>
+        <file>qml_local/PageData.qml</file>
+        <file>qml_local/PageCover.qml</file>
+        <file>qml_local/ModuleNaviBar.qml</file>
+        <file>images/搜索页.png</file>
+        <file>images/APP页面3.png</file>
+        <file>images/APP页面2.png</file>
+        <file>images/APP页面1.png</file>
+        <file>images/navis/GIS2.png</file>
+        <file>images/navis/GIS1.png</file>
+        <file>images/navis/info2.png</file>
+        <file>images/navis/info1.png</file>
+        <file>images/navis/set2.png</file>
+        <file>images/navis/set1.png</file>
+        <file>images/navis/me2.png</file>
+        <file>images/navis/me1.png</file>
+        <file>images/navis/home2.png</file>
+        <file>images/navis/home1.png</file>
+        <file>images/navis/data2.png</file>
+        <file>images/navis/data1.png</file>
+    </qresource>
+</RCC>

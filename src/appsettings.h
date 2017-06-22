@@ -1,7 +1,6 @@
 #ifndef APPSETTINGS_H
 #define APPSETTINGS_H
 
-//fufill app's framwork-level functions.
 
 #include <QObject>
 #include <QFile>
@@ -13,38 +12,41 @@
 #define MAJOR_VER   0
 #define MAIN_VER    1
 #define MINOR_VER   0
-#define DEV_VER     17040701
+#define DEV_VER     17062201
 
 
 #ifdef  Q_OS_ANDROID
-#define APP_FILE_NAME        "dataCenter.apk"
+#define APP_FILE_NAME        "appClient.apk"
 #endif
 #ifdef   Q_OS_IOS
 //change it!
-#define APP_FILE_NAME        "dataCenter.apk"
+#define APP_FILE_NAME        "appClient.apk"
 //end of change it!
 #endif
 #ifdef   Q_OS_OSX
-#define APP_FILE_NAME        "dataCenter"
+#define APP_FILE_NAME        "appClient"
 #endif
 #ifdef   Q_OS_LINUX
 
 #ifndef  Q_OS_ANDROID
 //change it!
-#define APP_FILE_NAME        "dataCenter"
+#define APP_FILE_NAME        "appClient"
 //end of change it!
 #endif
 #endif
 
 #ifdef   Q_OS_WINDOWS
-#define APP_FILE_NAME        "dataCenter.exe"
+#define APP_FILE_NAME        "appClient.exe"
 #endif
 
-#define CONFIG_FILE_NAME    "dataCenter.xml"
+#define CONFIG_FILE_NAME    "appClient.xml"
 #define SERVER_HOST         "app.csic711.net"
 #define SERVER_PATH         "/"
 #define LOCAL_STORAGE_PATH   "./settings/"
 
+/*!
+ * fufill app's framwork-level functions.
+ */
 class AppSettings : public QObject
 {
     Q_OBJECT

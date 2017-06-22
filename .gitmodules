@@ -1,3 +1,6 @@
 [submodule "lib/QtCookieSyn"]
 	path = lib/QtCookieSyn
 	url = https://github.com/linbin823/QtCookiesSyn.git
+[submodule "lib/loadSaveProcessor"]
+	path = lib/loadSaveProcessor
+	url = https://github.com/linbin823/Qt.lib.2016.loadSaveProcessor2.git
