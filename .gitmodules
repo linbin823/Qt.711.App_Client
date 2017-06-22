@@ -1,0 +1,3 @@
+[submodule "lib/QtCookieSyn"]
+	path = lib/QtCookieSyn
+	url = https://github.com/linbin823/QtCookiesSyn.git

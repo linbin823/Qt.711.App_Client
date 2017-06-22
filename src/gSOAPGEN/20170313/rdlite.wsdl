@@ -1,0 +1,379 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions name="rdlite"
+  targetNamespace="http://tempuri/rdservice?wsdl"
+  xmlns:tns="http://tempuri/rdservice?wsdl"
+  xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/"
+  xmlns:SOAP-ENC="http://schemas.xmlsoap.org/soap/encoding/"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+  xmlns:ns="urn:rdLite"
+  xmlns:SOAP="http://schemas.xmlsoap.org/wsdl/soap/"
+  xmlns:HTTP="http://schemas.xmlsoap.org/wsdl/http/"
+  xmlns:MIME="http://schemas.xmlsoap.org/wsdl/mime/"
+  xmlns:DIME="http://schemas.xmlsoap.org/ws/2002/04/dime/wsdl/"
+  xmlns:WSDL="http://schemas.xmlsoap.org/wsdl/"
+  xmlns="http://schemas.xmlsoap.org/wsdl/">
+
+<types>
+
+  <schema targetNamespace="urn:rdLite"
+    xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/"
+    xmlns:SOAP-ENC="http://schemas.xmlsoap.org/soap/encoding/"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:ns="urn:rdLite"
+    xmlns="http://www.w3.org/2001/XMLSchema"
+    elementFormDefault="unqualified"
+    attributeFormDefault="unqualified">
+    <import namespace="http://schemas.xmlsoap.org/soap/encoding/"/>
+    <complexType name="TagValue"><!-- TagValue -->
+          <sequence>
+            <element name="id" type="xsd:unsignedInt" minOccurs="1" maxOccurs="1"/><!-- TagValue::id -->
+            <element name="time" type="xsd:long" minOccurs="1" maxOccurs="1"/><!-- TagValue::time -->
+            <element name="value" type="xsd:string" minOccurs="0" maxOccurs="1"/><!-- TagValue::value -->
+          </sequence>
+    </complexType>
+    <complexType name="TagValueArray"><!-- TagValueArray -->
+          <sequence>
+            <element name="error" type="xsd:int" minOccurs="1" maxOccurs="1"/><!-- TagValueArray::error -->
+            <element name="item" type="ns:TagValue" minOccurs="0" maxOccurs="unbounded"/><!-- TagValueArray::__size -->
+          </sequence>
+    </complexType>
+    <complexType name="TagIdArray"><!-- TagIdArray -->
+          <sequence>
+            <element name="item" type="xsd:int" minOccurs="0" maxOccurs="unbounded"/><!-- TagIdArray::__size -->
+          </sequence>
+    </complexType>
+  </schema>
+
+</types>
+
+<message name="CreateSubscriptionRequest">
+  <part name="stationId" type="xsd:unsignedByte"/><!-- ns__CreateSubscription::stationId -->
+</message>
+
+<message name="CreateSubscriptionResponse">
+  <part name="result" type="xsd:int"/><!-- ns__CreateSubscription::result -->
+</message>
+
+<message name="AddSubscriptionItemRequest">
+  <part name="stationId" type="xsd:unsignedByte"/><!-- ns__AddSubscriptionItem::stationId -->
+  <part name="subId" type="xsd:int"/><!-- ns__AddSubscriptionItem::subId -->
+  <part name="tagId" type="ns:TagIdArray"/><!-- ns__AddSubscriptionItem::tagId -->
+</message>
+
+<message name="AddSubscriptionItemResponse">
+  <part name="result" type="xsd:int"/><!-- ns__AddSubscriptionItem::result -->
+</message>
+
+<message name="RefreshSubscriptionRequest">
+  <part name="stationId" type="xsd:unsignedByte"/><!-- ns__RefreshSubscription::stationId -->
+  <part name="subId" type="xsd:int"/><!-- ns__RefreshSubscription::subId -->
+</message>
+
+<message name="RefreshSubscriptionResponse">
+  <part name="result" type="ns:TagValueArray"/><!-- ns__RefreshSubscription::result -->
+</message>
+
+<message name="RemoveSubscriptionRequest">
+  <part name="stationId" type="xsd:unsignedByte"/><!-- ns__RemoveSubscription::stationId -->
+  <part name="subId" type="xsd:int"/><!-- ns__RemoveSubscription::subId -->
+</message>
+
+<message name="RemoveSubscriptionResponse">
+  <part name="result" type="xsd:int"/><!-- ns__RemoveSubscription::result -->
+</message>
+
+<message name="ReadRequest">
+  <part name="stationId" type="xsd:unsignedByte"/><!-- ns__Read::stationId -->
+  <part name="tagId" type="ns:TagIdArray"/><!-- ns__Read::tagId -->
+</message>
+
+<message name="ReadResponse">
+  <part name="result" type="ns:TagValueArray"/><!-- ns__Read::result -->
+</message>
+
+<message name="QueryRequest">
+  <part name="stationId" type="xsd:unsignedByte"/><!-- ns__Query::stationId -->
+  <part name="tagId" type="ns:TagIdArray"/><!-- ns__Query::tagId -->
+  <part name="valueType" type="xsd:unsignedByte"/><!-- ns__Query::valueType -->
+  <part name="beginTime" type="xsd:long"/><!-- ns__Query::beginTime -->
+  <part name="endTime" type="xsd:long"/><!-- ns__Query::endTime -->
+  <part name="count" type="xsd:unsignedShort"/><!-- ns__Query::count -->
+</message>
+
+<message name="QueryResponse">
+  <part name="result" type="ns:TagValueArray"/><!-- ns__Query::result -->
+</message>
+
+<message name="SetTagRequest">
+  <part name="stationId" type="xsd:unsignedByte"/><!-- ns__SetTag::stationId -->
+  <part name="id" type="xsd:unsignedInt"/><!-- ns__SetTag::id -->
+  <part name="metaId" type="xsd:unsignedShort"/><!-- ns__SetTag::metaId -->
+</message>
+
+<message name="SetTagResponse">
+  <part name="result" type="xsd:int"/><!-- ns__SetTag::result -->
+</message>
+
+<message name="EnableTagRequest">
+  <part name="stationId" type="xsd:unsignedByte"/><!-- ns__EnableTag::stationId -->
+  <part name="id" type="xsd:unsignedInt"/><!-- ns__EnableTag::id -->
+  <part name="enable" type="xsd:boolean"/><!-- ns__EnableTag::enable -->
+</message>
+
+<message name="EnableTagResponse">
+  <part name="result" type="xsd:int"/><!-- ns__EnableTag::result -->
+</message>
+
+<message name="SetMetaRequest">
+  <part name="stationId" type="xsd:unsignedByte"/><!-- ns__SetMeta::stationId -->
+  <part name="id" type="xsd:unsignedShort"/><!-- ns__SetMeta::id -->
+  <part name="index" type="xsd:int"/><!-- ns__SetMeta::index -->
+  <part name="name" type="xsd:string"/><!-- ns__SetMeta::name -->
+  <part name="dataLen" type="xsd:int"/><!-- ns__SetMeta::dataLen -->
+  <part name="isValue" type="xsd:boolean"/><!-- ns__SetMeta::isValue -->
+  <part name="isAlarm" type="xsd:boolean"/><!-- ns__SetMeta::isAlarm -->
+</message>
+
+<message name="SetMetaResponse">
+  <part name="result" type="xsd:int"/><!-- ns__SetMeta::result -->
+</message>
+
+<message name="RemvoeMetaRequest">
+  <part name="stationId" type="xsd:unsignedByte"/><!-- ns__RemvoeMeta::stationId -->
+  <part name="id" type="xsd:unsignedShort"/><!-- ns__RemvoeMeta::id -->
+</message>
+
+<message name="RemvoeMetaResponse">
+  <part name="result" type="xsd:int"/><!-- ns__RemvoeMeta::result -->
+</message>
+
+<message name="SetStationRequest">
+  <part name="id" type="xsd:unsignedByte"/><!-- ns__SetStation::id -->
+  <part name="name" type="xsd:string"/><!-- ns__SetStation::name -->
+  <part name="isScada" type="xsd:boolean"/><!-- ns__SetStation::isScada -->
+  <part name="recvHost" type="xsd:string"/><!-- ns__SetStation::recvHost -->
+  <part name="recvPort" type="xsd:unsignedShort"/><!-- ns__SetStation::recvPort -->
+  <part name="syncHost" type="xsd:string"/><!-- ns__SetStation::syncHost -->
+  <part name="syncPort" type="xsd:unsignedShort"/><!-- ns__SetStation::syncPort -->
+</message>
+
+<message name="SetStationResponse">
+  <part name="result" type="xsd:int"/><!-- ns__SetStation::result -->
+</message>
+
+<message name="EnableStationRequest">
+  <part name="id" type="xsd:unsignedByte"/><!-- ns__EnableStation::id -->
+  <part name="enabled" type="xsd:boolean"/><!-- ns__EnableStation::enabled -->
+</message>
+
+<message name="EnableStationResponse">
+  <part name="result" type="xsd:int"/><!-- ns__EnableStation::result -->
+</message>
+
+<message name="RemoveStationRequest">
+  <part name="id" type="xsd:unsignedByte"/><!-- ns__RemoveStation::id -->
+</message>
+
+<message name="RemoveStationResponse">
+  <part name="result" type="xsd:int"/><!-- ns__RemoveStation::result -->
+</message>
+
+<portType name="rdlitePortType">
+  <operation name="CreateSubscription">
+    <documentation>Service definition of function ns__CreateSubscription</documentation>
+    <input message="tns:CreateSubscriptionRequest"/>
+    <output message="tns:CreateSubscriptionResponse"/>
+  </operation>
+  <operation name="AddSubscriptionItem">
+    <documentation>Service definition of function ns__AddSubscriptionItem</documentation>
+    <input message="tns:AddSubscriptionItemRequest"/>
+    <output message="tns:AddSubscriptionItemResponse"/>
+  </operation>
+  <operation name="RefreshSubscription">
+    <documentation>Service definition of function ns__RefreshSubscription</documentation>
+    <input message="tns:RefreshSubscriptionRequest"/>
+    <output message="tns:RefreshSubscriptionResponse"/>
+  </operation>
+  <operation name="RemoveSubscription">
+    <documentation>Service definition of function ns__RemoveSubscription</documentation>
+    <input message="tns:RemoveSubscriptionRequest"/>
+    <output message="tns:RemoveSubscriptionResponse"/>
+  </operation>
+  <operation name="Read">
+    <documentation>Service definition of function ns__Read</documentation>
+    <input message="tns:ReadRequest"/>
+    <output message="tns:ReadResponse"/>
+  </operation>
+  <operation name="Query">
+    <documentation>Service definition of function ns__Query</documentation>
+    <input message="tns:QueryRequest"/>
+    <output message="tns:QueryResponse"/>
+  </operation>
+  <operation name="SetTag">
+    <documentation>Service definition of function ns__SetTag</documentation>
+    <input message="tns:SetTagRequest"/>
+    <output message="tns:SetTagResponse"/>
+  </operation>
+  <operation name="EnableTag">
+    <documentation>Service definition of function ns__EnableTag</documentation>
+    <input message="tns:EnableTagRequest"/>
+    <output message="tns:EnableTagResponse"/>
+  </operation>
+  <operation name="SetMeta">
+    <documentation>Service definition of function ns__SetMeta</documentation>
+    <input message="tns:SetMetaRequest"/>
+    <output message="tns:SetMetaResponse"/>
+  </operation>
+  <operation name="RemvoeMeta">
+    <documentation>Service definition of function ns__RemvoeMeta</documentation>
+    <input message="tns:RemvoeMetaRequest"/>
+    <output message="tns:RemvoeMetaResponse"/>
+  </operation>
+  <operation name="SetStation">
+    <documentation>Service definition of function ns__SetStation</documentation>
+    <input message="tns:SetStationRequest"/>
+    <output message="tns:SetStationResponse"/>
+  </operation>
+  <operation name="EnableStation">
+    <documentation>Service definition of function ns__EnableStation</documentation>
+    <input message="tns:EnableStationRequest"/>
+    <output message="tns:EnableStationResponse"/>
+  </operation>
+  <operation name="RemoveStation">
+    <documentation>Service definition of function ns__RemoveStation</documentation>
+    <input message="tns:RemoveStationRequest"/>
+    <output message="tns:RemoveStationResponse"/>
+  </operation>
+</portType>
+
+<binding name="rdlite" type="tns:rdlitePortType">
+  <SOAP:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+  <operation name="CreateSubscription">
+    <SOAP:operation style="rpc" soapAction=""/>
+    <input>
+          <SOAP:body use="encoded" namespace="urn:rdLite" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+    </input>
+    <output>
+          <SOAP:body use="encoded" namespace="urn:rdLite" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+    </output>
+  </operation>
+  <operation name="AddSubscriptionItem">
+    <SOAP:operation style="rpc" soapAction=""/>
+    <input>
+          <SOAP:body use="encoded" namespace="urn:rdLite" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+    </input>
+    <output>
+          <SOAP:body use="encoded" namespace="urn:rdLite" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+    </output>
+  </operation>
+  <operation name="RefreshSubscription">
+    <SOAP:operation style="rpc" soapAction=""/>
+    <input>
+          <SOAP:body use="encoded" namespace="urn:rdLite" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+    </input>
+    <output>
+          <SOAP:body use="encoded" namespace="urn:rdLite" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+    </output>
+  </operation>
+  <operation name="RemoveSubscription">
+    <SOAP:operation style="rpc" soapAction=""/>
+    <input>
+          <SOAP:body use="encoded" namespace="urn:rdLite" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+    </input>
+    <output>
+          <SOAP:body use="encoded" namespace="urn:rdLite" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+    </output>
+  </operation>
+  <operation name="Read">
+    <SOAP:operation style="rpc" soapAction=""/>
+    <input>
+          <SOAP:body use="encoded" namespace="urn:rdLite" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+    </input>
+    <output>
+          <SOAP:body use="encoded" namespace="urn:rdLite" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+    </output>
+  </operation>
+  <operation name="Query">
+    <SOAP:operation style="rpc" soapAction=""/>
+    <input>
+          <SOAP:body use="encoded" namespace="urn:rdLite" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+    </input>
+    <output>
+          <SOAP:body use="encoded" namespace="urn:rdLite" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+    </output>
+  </operation>
+  <operation name="SetTag">
+    <SOAP:operation style="rpc" soapAction=""/>
+    <input>
+          <SOAP:body use="encoded" namespace="urn:rdLite" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+    </input>
+    <output>
+          <SOAP:body use="encoded" namespace="urn:rdLite" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+    </output>
+  </operation>
+  <operation name="EnableTag">
+    <SOAP:operation style="rpc" soapAction=""/>
+    <input>
+          <SOAP:body use="encoded" namespace="urn:rdLite" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+    </input>
+    <output>
+          <SOAP:body use="encoded" namespace="urn:rdLite" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+    </output>
+  </operation>
+  <operation name="SetMeta">
+    <SOAP:operation style="rpc" soapAction=""/>
+    <input>
+          <SOAP:body use="encoded" namespace="urn:rdLite" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+    </input>
+    <output>
+          <SOAP:body use="encoded" namespace="urn:rdLite" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+    </output>
+  </operation>
+  <operation name="RemvoeMeta">
+    <SOAP:operation style="rpc" soapAction=""/>
+    <input>
+          <SOAP:body use="encoded" namespace="urn:rdLite" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+    </input>
+    <output>
+          <SOAP:body use="encoded" namespace="urn:rdLite" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+    </output>
+  </operation>
+  <operation name="SetStation">
+    <SOAP:operation style="rpc" soapAction=""/>
+    <input>
+          <SOAP:body use="encoded" namespace="urn:rdLite" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+    </input>
+    <output>
+          <SOAP:body use="encoded" namespace="urn:rdLite" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+    </output>
+  </operation>
+  <operation name="EnableStation">
+    <SOAP:operation style="rpc" soapAction=""/>
+    <input>
+          <SOAP:body use="encoded" namespace="urn:rdLite" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+    </input>
+    <output>
+          <SOAP:body use="encoded" namespace="urn:rdLite" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+    </output>
+  </operation>
+  <operation name="RemoveStation">
+    <SOAP:operation style="rpc" soapAction=""/>
+    <input>
+          <SOAP:body use="encoded" namespace="urn:rdLite" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+    </input>
+    <output>
+          <SOAP:body use="encoded" namespace="urn:rdLite" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+    </output>
+  </operation>
+</binding>
+
+<service name="rdlite">
+  <documentation>gSOAP 2.8.40 generated service definition</documentation>
+  <port name="rdlite" binding="tns:rdlite">
+    <SOAP:address location="http://tempuri/rdservice"/>
+  </port>
+</service>
+
+</definitions>

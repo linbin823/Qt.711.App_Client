@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions name="rdLite"
+  targetNamespace="urn:rdLite"
+  xmlns:tns="urn:rdLite"
+  xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/"
+  xmlns:SOAP-ENC="http://schemas.xmlsoap.org/soap/encoding/"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+  xmlns:ns="urn:rdLite"
+  xmlns:SOAP="http://schemas.xmlsoap.org/wsdl/soap/"
+  xmlns:HTTP="http://schemas.xmlsoap.org/wsdl/http/"
+  xmlns:MIME="http://schemas.xmlsoap.org/wsdl/mime/"
+  xmlns:DIME="http://schemas.xmlsoap.org/ws/2002/04/dime/wsdl/"
+  xmlns:WSDL="http://schemas.xmlsoap.org/wsdl/"
+  xmlns="http://schemas.xmlsoap.org/wsdl/">
+
+<types>
+
+  <schema targetNamespace="urn:rdLite"
+    xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/"
+    xmlns:SOAP-ENC="http://schemas.xmlsoap.org/soap/encoding/"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:ns="urn:rdLite"
+    xmlns="http://www.w3.org/2001/XMLSchema"
+    elementFormDefault="unqualified"
+    attributeFormDefault="unqualified">
+    <import namespace="http://schemas.xmlsoap.org/soap/encoding/"/>
+    <complexType name="TagValue"><!-- TagValue -->
+          <sequence>
+            <element name="id" type="xsd:unsignedInt" minOccurs="1" maxOccurs="1"/><!-- TagValue::id -->
+            <element name="time" type="xsd:long" minOccurs="1" maxOccurs="1"/><!-- TagValue::time -->
+            <element name="value" type="xsd:string" minOccurs="0" maxOccurs="1"/><!-- TagValue::value -->
+          </sequence>
+    </complexType>
+    <complexType name="TagValueArray"><!-- TagValueArray -->
+          <sequence>
+            <element name="error" type="xsd:int" minOccurs="1" maxOccurs="1"/><!-- TagValueArray::error -->
+            <element name="item" type="ns:TagValue" minOccurs="0" maxOccurs="unbounded"/><!-- TagValueArray::__size -->
+          </sequence>
+    </complexType>
+    <complexType name="TagIdArray"><!-- TagIdArray -->
+          <sequence>
+            <element name="item" type="xsd:int" minOccurs="0" maxOccurs="unbounded"/><!-- TagIdArray::__size -->
+          </sequence>
+    </complexType>
+    <!-- operation request element -->
+    <element name="Read">
+      <complexType>
+          <sequence>
+            <element name="stationId" type="xsd:unsignedByte" minOccurs="1" maxOccurs="1"/><!-- ns__Read::stationId -->
+            <element name="tagId" type="ns:TagIdArray" minOccurs="1" maxOccurs="1"/><!-- ns__Read::tagId -->
+          </sequence>
+      </complexType>
+    </element>
+    <!-- operation response element -->
+    <element name="ReadResponse">
+      <complexType>
+          <sequence>
+            <element name="result" type="ns:TagValueArray" minOccurs="1" maxOccurs="1"/><!-- ns__Read::result -->
+          </sequence>
+      </complexType>
+    </element>
+    <!-- operation request element -->
+    <element name="Query">
+      <complexType>
+          <sequence>
+            <element name="stationId" type="xsd:unsignedByte" minOccurs="1" maxOccurs="1"/><!-- ns__Query::stationId -->
+            <element name="tagId" type="ns:TagIdArray" minOccurs="1" maxOccurs="1"/><!-- ns__Query::tagId -->
+            <element name="valueType" type="xsd:unsignedByte" minOccurs="1" maxOccurs="1"/><!-- ns__Query::valueType -->
+            <element name="beginTime" type="xsd:long" minOccurs="1" maxOccurs="1"/><!-- ns__Query::beginTime -->
+            <element name="endTime" type="xsd:long" minOccurs="1" maxOccurs="1"/><!-- ns__Query::endTime -->
+            <element name="count" type="xsd:unsignedShort" minOccurs="1" maxOccurs="1"/><!-- ns__Query::count -->
+          </sequence>
+      </complexType>
+    </element>
+    <!-- operation response element -->
+    <element name="QueryResponse">
+      <complexType>
+          <sequence>
+            <element name="result" type="ns:TagValueArray" minOccurs="1" maxOccurs="1"/><!-- ns__Query::result -->
+          </sequence>
+      </complexType>
+    </element>
+  </schema>
+
+</types>
+
+<message name="ReadRequest">
+  <part name="Body" element="ns:Read"/><!-- ns__Read::ns__Read -->
+</message>
+
+<message name="ReadResponse">
+  <part name="Body" element="ns:ReadResponse"/>
+</message>
+
+<message name="QueryRequest">
+  <part name="Body" element="ns:Query"/><!-- ns__Query::ns__Query -->
+</message>
+
+<message name="QueryResponse">
+  <part name="Body" element="ns:QueryResponse"/>
+</message>
+
+<portType name="rdLitePortType">
+  <operation name="Read">
+    <documentation>Service definition of function ns__Read</documentation>
+    <input message="tns:ReadRequest"/>
+    <output message="tns:ReadResponse"/>
+  </operation>
+  <operation name="Query">
+    <documentation>Service definition of function ns__Query</documentation>
+    <input message="tns:QueryRequest"/>
+    <output message="tns:QueryResponse"/>
+  </operation>
+</portType>
+
+<binding name="rdLite" type="tns:rdLitePortType">
+  <SOAP:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+  <operation name="Read">
+    <SOAP:operation soapAction=""/>
+    <input>
+          <SOAP:body parts="Body" use="literal"/>
+    </input>
+    <output>
+          <SOAP:body parts="Body" use="literal"/>
+    </output>
+  </operation>
+  <operation name="Query">
+    <SOAP:operation soapAction=""/>
+    <input>
+          <SOAP:body parts="Body" use="literal"/>
+    </input>
+    <output>
+          <SOAP:body parts="Body" use="literal"/>
+    </output>
+  </operation>
+</binding>
+
+<service name="rdLite">
+  <documentation>gSOAP 2.8.40 generated service definition</documentation>
+  <port name="rdLite" binding="tns:rdLite">
+    <SOAP:address location="http://192.168.1.59:1662"/>
+  </port>
+</service>
+
+</definitions>
