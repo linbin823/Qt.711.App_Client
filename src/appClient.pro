@@ -51,3 +51,9 @@ include(../lib/QtCookieSyn/src/qtcookiesyn.pri)
 
 HEADERS += \
     appsettings.h
+
+contains(ANDROID_TARGET_ARCH,armeabi-v7a) {
+    ANDROID_EXTRA_LIBS = \
+        /home/linbin/QtPlayground/Qt.711.App_Client/src/../../../openssl/libssl.so \
+        $$PWD/../../../openssl/libcrypto.so
+}

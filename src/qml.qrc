@@ -5,25 +5,9 @@
         <file>images/opening/3.png</file>
         <file>images/opening/2.png</file>
         <file>images/opening/1.png</file>
-        <file>images/zoom_out.png</file>
-        <file>images/zoom_in.png</file>
-        <file>images/info.png</file>
-        <file>images/icon-up.png</file>
-        <file>images/icon-settings.png</file>
-        <file>images/icon-go.png</file>
-        <file>images/icon-down.png</file>
-        <file>images/icon-back.png</file>
         <file>images/CSIC.png</file>
-        <file>images/icons/icon96x96.png</file>
-        <file>images/icons/icon72x72.png</file>
-        <file>images/icons/icon48x48.png</file>
         <file>qml_local/main.qml</file>
-        <file>qml_local/PageUtility.qml</file>
-        <file>qml_local/PageHome.qml</file>
-        <file>qml_local/PageGIS.qml</file>
-        <file>qml_local/PageData.qml</file>
         <file>qml_local/PageCover.qml</file>
-        <file>qml_local/ModuleNaviBar.qml</file>
         <file>images/搜索页.png</file>
         <file>images/APP页面3.png</file>
         <file>images/APP页面2.png</file>
@@ -40,5 +24,36 @@
         <file>images/navis/home1.png</file>
         <file>images/navis/data2.png</file>
         <file>images/navis/data1.png</file>
+        <file>images/shortcut/icon96x96.png</file>
+        <file>images/shortcut/icon72x72.png</file>
+        <file>images/shortcut/icon48x48.png</file>
+        <file>images/icons/drawer.png</file>
+        <file>images/icons/zoom_out.png</file>
+        <file>images/icons/zoom_in.png</file>
+        <file>images/icons/menu@4x.png</file>
+        <file>images/icons/menu@3x.png</file>
+        <file>images/icons/menu@2x.png</file>
+        <file>images/icons/menu.png</file>
+        <file>images/icons/info.png</file>
+        <file>images/icons/icon-up.png</file>
+        <file>images/icons/icon-settings.png</file>
+        <file>images/icons/icon-go.png</file>
+        <file>images/icons/icon-down.png</file>
+        <file>images/icons/icon-back.png</file>
+        <file>images/icons/drawer@4x.png</file>
+        <file>images/icons/drawer@3x.png</file>
+        <file>images/icons/drawer@2x.png</file>
+        <file>images/icons/back@4x.png</file>
+        <file>images/icons/back@3x.png</file>
+        <file>images/icons/back@2x.png</file>
+        <file>images/icons/back.png</file>
+        <file>images/icons/arrows@4x.png</file>
+        <file>images/icons/arrows@3x.png</file>
+        <file>images/icons/arrows@2x.png</file>
+        <file>images/icons/arrows.png</file>
+        <file>images/icons/arrow@4x.png</file>
+        <file>images/icons/arrow@3x.png</file>
+        <file>images/icons/arrow@2x.png</file>
+        <file>images/icons/arrow.png</file>
     </qresource>
 </RCC>
