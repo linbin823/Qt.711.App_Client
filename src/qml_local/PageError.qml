@@ -1,6 +1,11 @@
 import QtQuick 2.0
 
 Item {
+    property bool canGoBack : false
+    function goBack(){
+        return false
+    }
+
     Text{
         width: parent.width * 0.9
         height: parent.height

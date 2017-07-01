@@ -19,7 +19,7 @@ ApplicationWindow {
     property ApplicationWindow rootWindow : appWindow
     property real rowHeight : appWindow.height * 0.07
     property bool isLogin : false
-    property string currentProjectName: qsTr("船舶数据中心")
+    property string currenTitle: qsTr("未连接")
 
     Settings {
         id: settings
@@ -103,9 +103,22 @@ ApplicationWindow {
         }
     }
 
-    Component.onCompleted: {
-        //init Loader
+    function goBack(){
+        if(ctxLoader.item.canGoBack){
+            ctxLoader.item.goBack();
+            return true
+        }
+        return false
+    }
 
+    onClosing: {
+        var done = goBack()
+        if(done){
+            close.accepted = false
+        }
+    }
+
+    Component.onCompleted: {
         //auto log-in
         if(settings.isAutoLogInActive){
             logIn()
@@ -113,13 +126,6 @@ ApplicationWindow {
 
         //init Navigate Page
         initNaviPage()
-    }
-    Keys.onReleased : {
-        if(event.key === Qt.Key_Back)
-            if( content.currentItem.canGoBack ){
-                content.currentItem.goBack()
-                event.accepted=true;
-            }
     }
 
     PageCover{
@@ -186,9 +192,20 @@ ApplicationWindow {
                 width: tools.width
                 height: tools.height
 
+                ToolButton {
+                    contentItem: Image {
+                        fillMode: Image.PreserveAspectFit
+                        horizontalAlignment: Image.AlignHCenter
+                        verticalAlignment: Image.AlignVCenter
+                        source: "qrc:/images/icons/back@4x.png"
+                    }
+                    onClicked: goBack();
+
+                }//end of ToolButton
+
                 Label {
                     id: titleLabel
-                    text:currentProjectName
+                    text:currenTitle
                     font.pixelSize: tools.height*0.5
                     horizontalAlignment: Text.AlignHCenter
                     verticalAlignment: Text.AlignVCenter
@@ -227,12 +244,20 @@ ApplicationWindow {
                 }
             }
         }
+
+        Connections{
+            target:ctxLoader.item
+            onTitleChanged: {
+                currenTitle = title
+            }
+        }
     }//end of visibleContent
 
 
     Menu {
         id: optionsMenu
         x: appWindow.width - width
+        y: tools.height
         transformOrigin: Menu.TopRight
         background: Rectangle {
             implicitWidth: appWindow.width * 0.4
