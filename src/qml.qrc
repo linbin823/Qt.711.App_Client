@@ -1,17 +1,7 @@
 <RCC>
     <qresource prefix="/">
-        <file>images/opening/5.png</file>
-        <file>images/opening/4.png</file>
-        <file>images/opening/3.png</file>
-        <file>images/opening/2.png</file>
-        <file>images/opening/1.png</file>
-        <file>images/CSIC.png</file>
         <file>qml_local/main.qml</file>
         <file>qml_local/PageCover.qml</file>
-        <file>images/搜索页.png</file>
-        <file>images/APP页面3.png</file>
-        <file>images/APP页面2.png</file>
-        <file>images/APP页面1.png</file>
         <file>images/navis/GIS2.png</file>
         <file>images/navis/GIS1.png</file>
         <file>images/navis/info2.png</file>
@@ -55,5 +45,7 @@
         <file>images/icons/arrow@3x.png</file>
         <file>images/icons/arrow@2x.png</file>
         <file>images/icons/arrow.png</file>
+        <file>qml_local/PageError.qml</file>
+        <file>images/splash/splash.png</file>
     </qresource>
 </RCC>

@@ -38,12 +38,11 @@ DISTFILES += \
     android/res/values/libs.xml \
     android/build.gradle \
     android/gradle/wrapper/gradle-wrapper.properties \
-    android/gradlew.bat
+    android/gradlew.bat \
+    images/splash/闪屏页面.png
 
 ANDROID_PACKAGE_SOURCE_DIR = $$PWD/android
 
-#to serial/deserial objects in xml or jason fomat
-include(../lib/loadSaveProcessor/src/loadsaveProcessor.pri)
 #to use cookies in the qml
 include(../lib/QtCookieSyn/src/qtcookiesyn.pri)
 #to use load save function
@@ -53,7 +52,5 @@ HEADERS += \
     appsettings.h
 
 contains(ANDROID_TARGET_ARCH,armeabi-v7a) {
-    ANDROID_EXTRA_LIBS = \
-        /home/linbin/QtPlayground/Qt.711.App_Client/src/../../../openssl/libssl.so \
-        $$PWD/../../../openssl/libcrypto.so
+    ANDROID_EXTRA_LIBS =
 }
