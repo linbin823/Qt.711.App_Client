@@ -65,12 +65,12 @@ ApplicationWindow {
     function sendLogInRequest(){
         if(settings.usrName=="" ) return;
         var xhr = new XMLHttpRequest()
-        var url = "http://qydl.csic711.net/admin.php?m=user&f=login"
+        var url = pageServerUrl + "/admin.php?m=user&f=login"
         url = encodeURI(url);
         //console.log(url)
         var data={}
         data.account = settings.usrName
-        data.password = settings.usrPswd
+        data.password = Qt.md5( settings.usrPswd + "1234" )
         //console.log(settings.usrPswd)
         //data.referer = encodeURI(url);
         //data.Fingerprint = 904982964
