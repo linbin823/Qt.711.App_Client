@@ -27,24 +27,11 @@ ApplicationWindow {
         property bool isAutoLogInActive: false
         property bool isPageAndDataSame:true
         property date lastManualLogin
-        property string pageServerUrl : "http://127.0.0.1"
-        property string dataServerUrl: "http://127.0.0.1"
-        property int pageServerPort  : 8080
-        property int dataServerPort  : 8080
+        property string pageServerUrl : "http://127.0.0.1:8080"
+        property string dataServerUrl : "http://127.0.0.1:8080"
         property string usrName  : ""
         property string usrPswd  : ""
     }
-    function genWholePageUrl(){
-        var url = settings.pageServerUrl;
-        url    += ":" + settings.pageServerPort;
-        return url;
-    }
-    function genWholeDataUrl(){
-        var url = settings.dataServerUrl;
-        url    += ":" + settings.dataServerPort;
-        return url;
-    }
-
     function autoFixUrl(oriental){
         var str = oriental.replace(/\s+/g, "");
         str = str.replace("\\", "/");
@@ -59,9 +46,9 @@ ApplicationWindow {
 
     function initNaviPage(){
         ctxLoader.setSource( "" )
-        var url = genWholePageUrl()+"/qml_remote/NaviPage.qml"
+        var url = settings.pageServerUrl +"/qml_remote/NaviPage.qml"
         ctxLoader.setSource( url ,
-                            {"wholeDataUrl":genWholeDataUrl()}
+                            {"wholeDataUrl":settings.dataServerUrl}
                             )
     }
 
@@ -70,8 +57,6 @@ ApplicationWindow {
         settings.isAutoLogInActive = false
         settings.pageServerUrl = "127.0.0.1"
         settings.dataServerUrl = "127.0.0.1"
-        settings.pageServerPort = 8080
-        settings.dataServerPort = 8080
         settings.usrName = ""
         settings.usrPswd = ""
         settings.lastManualLogin = new Date()
@@ -80,15 +65,17 @@ ApplicationWindow {
     function sendLogInRequest(){
         if(settings.usrName=="" ) return;
         var xhr = new XMLHttpRequest()
-        var url = genWholeDataUrl()
-        url += encodeURI("/admin.php?m=user&f=login");
+        var url = "http://qydl.csic711.net/admin.php?m=user&f=login"
+        url = encodeURI(url);
         //console.log(url)
         var data={}
         data.account = settings.usrName
         data.password = settings.usrPswd
-        data.referer = encodeURI(url);
-        data.Fingerprint = ""
+        //console.log(settings.usrPswd)
+        //data.referer = encodeURI(url);
+        //data.Fingerprint = 904982964
         var dataString = JSON.stringify(data)
+        console.log( dataString )
         xhr.open("POST", url, true);
         xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
         xhr.send( dataString );
@@ -103,6 +90,7 @@ ApplicationWindow {
         }
     }
 
+    //后退
     function goBack(){
         if(ctxLoader.item.canGoBack){
             ctxLoader.item.goBack();
@@ -111,6 +99,7 @@ ApplicationWindow {
         return false
     }
 
+    //退出时，转为后退
     onClosing: {
         var done = goBack()
         if(done){
@@ -121,7 +110,7 @@ ApplicationWindow {
     Component.onCompleted: {
         //auto log-in
         if(settings.isAutoLogInActive){
-            logIn()
+            sendLogInRequest()
         }
 
         //init Navigate Page
@@ -302,14 +291,10 @@ ApplicationWindow {
             settings.isPageAndDataSame = isPageAndDataSame.checked
             if(isPageAndDataSame.checked){
                 settings.pageServerUrl = autoFixUrl(pageServerUrl.displayText);
-                settings.pageServerPort = pageServerPort.displayText;
                 settings.dataServerUrl = autoFixUrl(pageServerUrl.displayText);
-                settings.dataServerPort = pageServerPort.displayText;
             }else{
                 settings.pageServerUrl = autoFixUrl(pageServerUrl.displayText);
-                settings.pageServerPort = pageServerPort.displayText;
                 settings.dataServerUrl = autoFixUrl(dataServerUrl.displayText);
-                settings.dataServerPort = dataServerPort.displayText;
             }
             settingsDialog.close();
             initNaviPage()
@@ -334,10 +319,8 @@ ApplicationWindow {
                     }
                     onCheckedChanged: {
                         if(checked){
-                            dataServerPortSettings.visible = false
                             dataServerUrlSettings.visible = false
                         }else{
-                            dataServerPortSettings.visible = true
                             dataServerUrlSettings.visible = true
                         }
                     }
@@ -410,29 +393,6 @@ ApplicationWindow {
                 }
             }
             RowLayout {
-                id: pageServerPortSettings
-                spacing: 10
-                height: rowHeight
-
-                Label {
-                    text: qsTr("页面服务器端口:")
-                    Layout.fillHeight: true
-                    font.pixelSize: rowHeight * 0.4
-                    verticalAlignment: Text.AlignVCenter
-                }
-                TextInput{
-                    id: pageServerPort
-                    text : settings.pageServerPort
-                    inputMask: "00000"
-                    Layout.fillHeight: true
-                    Layout.fillWidth:  true
-                    font.pixelSize: rowHeight * 0.4
-                    verticalAlignment: Text.AlignVCenter
-                    wrapMode: TextInput.WrapAnywhere
-                    inputMethodHints : Qt.ImhPreferNumbers
-                }
-            }
-            RowLayout {
                 id: dataServerUrlSettings
                 spacing: 10
                 height: rowHeight
@@ -451,29 +411,6 @@ ApplicationWindow {
                     font.pixelSize: rowHeight * 0.4
                     verticalAlignment: Text.AlignVCenter
                     wrapMode: TextInput.WrapAnywhere
-                }
-            }
-            RowLayout {
-                id: dataServerPortSettings
-                spacing: 10
-                height: rowHeight
-
-                Label {
-                    text: qsTr("数据服务器端口:")
-                    Layout.fillHeight: true
-                    font.pixelSize: rowHeight * 0.4
-                    verticalAlignment: Text.AlignVCenter
-                }
-                TextInput{
-                    id: dataServerPort
-                    text : settings.dataServerPort
-                    inputMask: "00000"
-                    Layout.fillHeight: true
-                    Layout.fillWidth:  true
-                    font.pixelSize: rowHeight * 0.4
-                    verticalAlignment: Text.AlignVCenter
-                    wrapMode: TextInput.WrapAnywhere
-                    inputMethodHints : Qt.ImhPreferNumbers
                 }
             }
         }
@@ -498,7 +435,7 @@ ApplicationWindow {
         onAccepted: {
             settings.usrName = usrName.text;
             if(settings.usrPswd != usrPswd.text){
-                settings.usrPswd = Qt.md5(  Qt.md5(usrPswd.text)+usrName.text );
+                settings.usrPswd = Qt.md5( Qt.md5(  Qt.md5(usrPswd.text)+usrName.text ) + "1234" );
             }
             sendLogInRequest();
             accountDialog.close()

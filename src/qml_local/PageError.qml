@@ -5,6 +5,7 @@ Item {
     function goBack(){
         return false
     }
+    signal titleChanged(string title)
 
     Text{
         width: parent.width * 0.9
