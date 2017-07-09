@@ -1,5 +1,0 @@
-<RCC>
-    <qresource prefix="/">
-        <file>NaviPage.qml</file>
-    </qresource>
-</RCC>

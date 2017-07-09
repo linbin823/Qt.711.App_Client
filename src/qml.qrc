@@ -2,50 +2,21 @@
     <qresource prefix="/">
         <file>qml_local/main.qml</file>
         <file>qml_local/PageCover.qml</file>
-        <file>images/navis/GIS2.png</file>
-        <file>images/navis/GIS1.png</file>
-        <file>images/navis/info2.png</file>
-        <file>images/navis/info1.png</file>
-        <file>images/navis/set2.png</file>
-        <file>images/navis/set1.png</file>
-        <file>images/navis/me2.png</file>
-        <file>images/navis/me1.png</file>
-        <file>images/navis/home2.png</file>
-        <file>images/navis/home1.png</file>
-        <file>images/navis/data2.png</file>
-        <file>images/navis/data1.png</file>
         <file>images/shortcut/icon96x96.png</file>
         <file>images/shortcut/icon72x72.png</file>
         <file>images/shortcut/icon48x48.png</file>
-        <file>images/icons/drawer.png</file>
-        <file>images/icons/zoom_out.png</file>
-        <file>images/icons/zoom_in.png</file>
-        <file>images/icons/menu@4x.png</file>
-        <file>images/icons/menu@3x.png</file>
-        <file>images/icons/menu@2x.png</file>
         <file>images/icons/menu.png</file>
-        <file>images/icons/info.png</file>
-        <file>images/icons/icon-up.png</file>
-        <file>images/icons/icon-settings.png</file>
-        <file>images/icons/icon-go.png</file>
-        <file>images/icons/icon-down.png</file>
-        <file>images/icons/icon-back.png</file>
-        <file>images/icons/drawer@4x.png</file>
-        <file>images/icons/drawer@3x.png</file>
-        <file>images/icons/drawer@2x.png</file>
-        <file>images/icons/back@4x.png</file>
-        <file>images/icons/back@3x.png</file>
-        <file>images/icons/back@2x.png</file>
         <file>images/icons/back.png</file>
-        <file>images/icons/arrows@4x.png</file>
-        <file>images/icons/arrows@3x.png</file>
-        <file>images/icons/arrows@2x.png</file>
-        <file>images/icons/arrows.png</file>
-        <file>images/icons/arrow@4x.png</file>
-        <file>images/icons/arrow@3x.png</file>
-        <file>images/icons/arrow@2x.png</file>
-        <file>images/icons/arrow.png</file>
         <file>qml_local/PageError.qml</file>
+        <file>images/icons/usrNameTip.png</file>
+        <file>images/icons/RTTableMore_p.png</file>
+        <file>images/icons/RTTableMore.png</file>
+        <file>images/icons/pswdTip.png</file>
+        <file>images/icons/menuUpdate.png</file>
+        <file>images/icons/menuSetting.png</file>
+        <file>images/icons/menuRefresh.png</file>
+        <file>images/icons/menuLogIn.png</file>
+        <file>qml_local/userMgr.js</file>
         <file>images/splash/splash.png</file>
     </qresource>
 </RCC>

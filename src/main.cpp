@@ -6,6 +6,7 @@
 #include "appsettings.h"
 #include <QSslSocket>
 #include <QCryptographicHash>
+//#include "qaeswrap.h"
 
 int main(int argc, char *argv[])
 {
@@ -19,7 +20,11 @@ int main(int argc, char *argv[])
 
     QQmlContext *context = engine.rootContext();
     AppSettings* setting = new AppSettings();
+    //QAesWrap* aes = new QAesWrap("&!!&!!!@", "w2wJCnctEG09danPPI7SxQ==", QAesWrap::AES_256);
+
     context->setContextProperty("settings", setting);
+    //context->setContextProperty("AES",      aes);
+
     qDebug()<<"here"<<QSslSocket::supportsSsl()<<QSslSocket::sslLibraryVersionString();
     engine.load(QUrl(QStringLiteral("qrc:/qml_local/main.qml")));
     return app.exec();
