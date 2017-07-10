@@ -94,6 +94,8 @@ ApplicationWindow {
         return false
     }
 
+    property bool menuShow: false
+
     //退出时，转为后退
     onClosing: {
         var done = goBack()
@@ -217,7 +219,14 @@ ApplicationWindow {
                 MouseArea{
                     anchors.fill: parent
                     onClicked:{
-                        optionsMenu.open()
+                        if(menuShow){
+                            menuShow = false
+                            optionsMenu.close()
+                        }
+                        else{
+                            menuShow = true
+                            optionsMenu.open()
+                        }
                     }
                 }
             }//end of ToolButton
@@ -253,8 +262,8 @@ ApplicationWindow {
 
     Popup {
         id: optionsMenu
-        x:  appWindow.width - width - actualX(12)
-        y:  tools.height + actualY(12)
+        x:  appWindow.width - width - actualX(6)
+        y:  tools.height + actualY(6)
         width: actualX(280)
         height:actualY(359)
         transformOrigin: Item.TopRight
@@ -337,236 +346,247 @@ ApplicationWindow {
         x: Math.round((rootWindow.width - width) / 2)
         y: Math.round(rootWindow.height / 6)
         width: actualX(620)
-        contentHeight: settingsContent.height
+        height:actualY(40+40+50+85+50+85+40+35+20+40+40+35+20+40+40+85)
         modal: true;
         focus: true;
         background: Rectangle {
             anchors.fill: parent
             border.width: 0
+            color: "transparent"
+        }
+        Rectangle {
+            anchors.fill: parent
+            border.width: 0
             color: "#ffffff"
             radius: actualX(30)
         }
-        ColumnLayout {
-            id: settingsContent
-            x: actualX(-12)
-            y: actualY(-12)
-            width: actualX(620)
-            spacing: 0
+        Text{
+            id: settingsTitle
+            anchors.top: parent.top
+            anchors.topMargin: actualY(40)
+            anchors.left: parent.left
+            anchors.leftMargin: actualX(50)
+            anchors.right: parent.right
+            anchors.rightMargin: actualX(50)
+            height: actualY(40)
+            color: "#333333"
+            font.pixelSize: actualY(36)
+            text: qsTr("服务器设置")
+            horizontalAlignment: Text.AlignHCenter
+            verticalAlignment: Text.AlignVCenter
+        }
+        RowLayout {
+            id: settingsIsIPFrame
+            anchors.top: settingsTitle.bottom
+            anchors.topMargin: actualY(50)
+            anchors.left: settingsTitle.left
+            anchors.right: settingsTitle.right
+            height: actualY(85)
+            clip: true
+            CheckBox{
+                id: isIP
+                Layout.fillHeight: true
+                checked: false
+                onCheckedChanged: {
+                    var pageOld = pageServerUrl.displayText
+                    var dataOld = dataServerUrl.displayText
+                    if(checked){
+                        pageServerUrl.inputMethodHints = Qt.ImhPreferNumbers
+                        pageServerUrl.inputMask = "000.000.000.000:0000"
+                        pageServerUrl.text = pageOld
+
+                        dataServerUrl.inputMethodHints = Qt.ImhPreferNumbers
+                        dataServerUrl.inputMask = "000.000.000.000:0000"
+                        dataServerUrl.text = dataOld
+                    }else{
+                        pageServerUrl.inputMethodHints = Qt.ImhUrlCharactersOnly
+                        pageServerUrl.inputMask = ""
+                        pageServerUrl.text = pageOld
+
+                        dataServerUrl.inputMethodHints = Qt.ImhUrlCharactersOnly
+                        dataServerUrl.inputMask = ""
+                        dataServerUrl.text = dataOld
+                    }
+                }
+            }
+            Label {
+                text: qsTr("IP地址")
+                Layout.fillHeight: true
+                Layout.fillWidth: true
+                font.pixelSize: actualX(32)
+                color: "#333333"
+                horizontalAlignment: Text.AlignLeft
+                verticalAlignment: Text.AlignVCenter
+            }
+        }
+        Rectangle{
+            anchors.top: settingsIsIPFrame.bottom
+            anchors.left: settingsIsIPFrame.left
+            anchors.right: settingsIsIPFrame.right
+            height: 1
+            color: "#333333"
+        }
+        RowLayout {
+            id: settingsIsPageAndDataSameFrame
+            anchors.top: settingsIsIPFrame.bottom
+            anchors.topMargin: actualY(50)
+            anchors.left: settingsIsIPFrame.left
+            anchors.right: settingsIsIPFrame.right
+            height: actualY(85)
+            clip: true
+            CheckBox{
+                id: isPageAndDataSame
+                Layout.fillHeight: true
+                Component.onCompleted: {
+                    //initial the form
+                    checked = settings.isPageAndDataSame
+                    onCheckedChanged()
+                }
+                onCheckedChanged: {
+                    if(checked){
+                        dataServerUrlLabel.visible = false
+                        dataServerUrl.visible = false
+                    }else{
+                        dataServerUrlLabel.visible = true
+                        dataServerUrl.visible = true
+                    }
+                }
+            }
+            Label {
+                text: qsTr("页面服务器和数据服务器地址相同")
+                Layout.fillHeight: true
+                Layout.fillWidth: true
+                font.pixelSize: actualX(32)
+                color: "#333333"
+                horizontalAlignment: Text.AlignLeft
+                verticalAlignment: Text.AlignVCenter
+            }
+        }
+        Rectangle{
+            anchors.top: settingsIsPageAndDataSameFrame.bottom
+            anchors.left: settingsIsPageAndDataSameFrame.left
+            anchors.right: settingsIsPageAndDataSameFrame.right
+            height: 1
+            color: "#333333"
+        }
+        Label {
+            id: pageServerUrlLabel
+            anchors.top: settingsIsPageAndDataSameFrame.bottom
+            anchors.topMargin: actualY(40)
+            anchors.left: settingsIsPageAndDataSameFrame.left
+            anchors.right: settingsIsPageAndDataSameFrame.right
+            height: actualY(35)
+            text: qsTr("页面服务器地址:")
+            font.pixelSize: actualX(32)
+            color: "#333333"
+            horizontalAlignment: Text.AlignLeft
+            verticalAlignment: Text.AlignVCenter
+        }
+        TextInput{
+            id: pageServerUrl
+            clip: true
+            text : settings.pageServerUrl
+            height: actualY(40)
+            anchors.top: pageServerUrlLabel.bottom
+            anchors.topMargin: actualY(20)
+            anchors.left: pageServerUrlLabel.left
+            anchors.right: pageServerUrlLabel.right
+            font.pixelSize: actualX(32)
+            color: "#333333"
+            horizontalAlignment: Text.AlignLeft
+            verticalAlignment: Text.AlignVCenter
+            wrapMode: TextInput.WrapAnywhere
+        }
+        Rectangle{
+            anchors.top: pageServerUrl.bottom
+            anchors.left: pageServerUrl.left
+            anchors.right: pageServerUrl.right
+            height: 1
+            color: "#333333"
+        }
+        Label {
+            id: dataServerUrlLabel
+            anchors.top: pageServerUrl.bottom
+            anchors.topMargin: actualY(35)
+            anchors.left: pageServerUrl.left
+            anchors.right: pageServerUrl.right
+            height: actualY(50)
+            text: qsTr("页面服务器地址:")
+            font.pixelSize: actualX(32)
+            color: "#333333"
+            horizontalAlignment: Text.AlignLeft
+            verticalAlignment: Text.AlignVCenter
+        }
+        TextInput{
+            id: dataServerUrl
+            clip: true
+            text : settings.dataServerUrl
+            height: actualY(40)
+            anchors.top: dataServerUrlLabel.bottom
+            anchors.topMargin: actualY(20)
+            anchors.left: dataServerUrlLabel.left
+            anchors.right: dataServerUrlLabel.right
+            font.pixelSize: actualX(32)
+            color: "#333333"
+            horizontalAlignment: Text.AlignLeft
+            verticalAlignment: Text.AlignVCenter
+            wrapMode: TextInput.WrapAnywhere
+        }
+        Image{
+            width: actualX(310)
+            height: actualY(85)
+            anchors.top: dataServerUrl.bottom
+            anchors.topMargin: actualY(40)
+            anchors.left: parent.left
+            anchors.right: dataServerUrl.horizontalCenter
+            source: "qrc:/images/icons/PushButtonOK.png"
             Text{
-                anchors.horizontalCenter: parent.horizontalCenter
-                width: actualX(620)
-                height: actualY(40)
-                color: "#333333"
-                font.pixelSize: actualX(36)
-                text: qsTr("服务器设置");
-                Layout.topMargin: actualY(40)
-            }
-            RowLayout {
-                height: actualY(40)
-                Layout.topMargin: actualY(40)
-                Layout.leftMargin: actualX(40)
-                Layout.rightMargin: actualX(40)
-                CheckBox{
-                    id: isIP
-                    Layout.fillHeight: true
-                    checked: false
-                    onCheckedChanged: {
-                        var pageOld = pageServerUrl.displayText
-                        var dataOld = dataServerUrl.displayText
-                        if(checked){
-                            pageServerUrl.inputMethodHints = Qt.ImhPreferNumbers
-                            pageServerUrl.inputMask = "000.000.000.000:0000"
-                            pageServerUrl.text = pageOld
-
-                            dataServerUrl.inputMethodHints = Qt.ImhPreferNumbers
-                            dataServerUrl.inputMask = "000.000.000.000:0000"
-                            dataServerUrl.text = dataOld
-                        }else{
-                            pageServerUrl.inputMethodHints = Qt.ImhUrlCharactersOnly
-                            pageServerUrl.inputMask = ""
-                            pageServerUrl.text = pageOld
-
-                            dataServerUrl.inputMethodHints = Qt.ImhUrlCharactersOnly
-                            dataServerUrl.inputMask = ""
-                            dataServerUrl.text = dataOld
-                        }
-                    }
-                }
-                Label {
-                    text: qsTr("IP地址")
-                    Layout.fillHeight: true
-                    font.pixelSize: actualX(32)
-                    color: "#333333"
-                    horizontalAlignment: Text.AlignLeft
-                }
-            }
-            Rectangle{
-                height: 1
-                color: "#333333"
-                Layout.topMargin: actualY(20)
-                Layout.leftMargin: actualX(40)
-                Layout.rightMargin: actualX(40)
-                Layout.fillWidth: true
-            }
-            RowLayout {
-                height: actualY(40)
-                Layout.leftMargin: actualX(40)
-                Layout.rightMargin: actualX(40)
-                Layout.topMargin: actualY(20)
-                CheckBox{
-                    id: isPageAndDataSame
-                    Layout.fillHeight: true
-                    Component.onCompleted: {
-                        //initial the form
-                        checked = settings.isPageAndDataSame
-                        onCheckedChanged()
-                    }
-                    onCheckedChanged: {
-                        if(checked){
-                            dataServerUrlLabel.visible = false
-                            dataServerUrl.visible = false
-                        }else{
-                            dataServerUrlLabel.visible = true
-                            dataServerUrl.visible = true
-                        }
-                    }
-                }
-                Label {
-                    text: qsTr("页面服务器和数据服务器地址相同")
-                    Layout.fillHeight: true
-                    font.pixelSize: actualX(32)
-                    color: "#333333"
-                    horizontalAlignment: Text.AlignLeft
-                }
-            }
-            Rectangle{
-                height: 1
-                color: "#333333"
-                Layout.topMargin: actualY(20)
-                Layout.leftMargin: actualX(40)
-                Layout.rightMargin: actualX(40)
-                Layout.fillWidth: true
-            }
-            Label {
-                text: qsTr("页面服务器地址:")
-                height: actualY(40)
-                Layout.leftMargin: actualX(40)
-                Layout.rightMargin: actualX(40)
-                Layout.topMargin: actualY(20)
-                Layout.fillWidth:  true
-                font.pixelSize: actualX(32)
-                color: "#333333"
-                horizontalAlignment: Text.AlignLeft
-            }
-            TextInput{
-                id: pageServerUrl
-                clip: true
-                text : settings.pageServerUrl
-                height: actualY(40)
-                Layout.leftMargin: actualX(40)
-                Layout.rightMargin: actualX(40)
-                Layout.topMargin: actualY(20)
-                Layout.fillWidth:  true
-                font.pixelSize: actualX(32)
-                color: "#333333"
-                horizontalAlignment: Text.AlignLeft
+                anchors.fill: parent
                 verticalAlignment: Text.AlignVCenter
-                wrapMode: TextInput.WrapAnywhere
-            }
-            Rectangle{
-                height: 1
+                horizontalAlignment: Text.AlignHCenter
+                font.pixelSize: actualY(36)
                 color: "#333333"
-                Layout.topMargin: actualY(20)
-                Layout.leftMargin: actualX(40)
-                Layout.rightMargin: actualX(40)
-                Layout.fillWidth: true
+                text: qsTr("确认")
             }
-            Label {
-                id: dataServerUrlLabel
-                text: qsTr("数据服务器地址:")
-                height: actualY(40)
-                Layout.leftMargin: actualX(40)
-                Layout.rightMargin: actualX(40)
-                Layout.topMargin: actualY(20)
-                Layout.fillWidth:  true
-                font.pixelSize: actualX(32)
-                color: "#333333"
-                horizontalAlignment: Text.AlignLeft
+            MouseArea{
+                anchors.fill: parent
+                onReleased: {
+                    settings.isPageAndDataSame = isPageAndDataSame.checked
+                    if(isPageAndDataSame.checked){
+                        settings.pageServerUrl = autoFixUrl(pageServerUrl.displayText);
+                        settings.dataServerUrl = autoFixUrl(pageServerUrl.displayText);
+                    }else{
+                        settings.pageServerUrl = autoFixUrl(pageServerUrl.displayText);
+                        settings.dataServerUrl = autoFixUrl(dataServerUrl.displayText);
+                    }
+                    settingsDialog.close();
+                    naviPage()
+                }
             }
-            TextInput{
-                id: dataServerUrl
-                clip: true
-                text : settings.dataServerUrl
-                height: actualY(40)
-                Layout.leftMargin: actualX(40)
-                Layout.rightMargin: actualX(40)
-                Layout.topMargin: actualY(20)
-                Layout.fillWidth:  true
-                font.pixelSize: actualX(32)
-                color: "#333333"
-                horizontalAlignment: Text.AlignLeft
+        }
+        Image{
+            width: actualX(310)
+            height: actualY(85)
+            anchors.top: dataServerUrl.bottom
+            anchors.topMargin: actualY(40)
+            anchors.left: dataServerUrl.horizontalCenter
+            anchors.right: parent.right
+            source: "qrc:/images/icons/PushButtonCancel.png"
+            Text{
+                anchors.fill: parent
                 verticalAlignment: Text.AlignVCenter
-                wrapMode: TextInput.WrapAnywhere
+                horizontalAlignment: Text.AlignHCenter
+                font.pixelSize: actualY(36)
+                color: "#333333"
+                text: qsTr("取消")
             }
-            RowLayout{
-                id:settingButtons
-                spacing: actualX(40)
-                Layout.leftMargin: actualX(20)
-                Layout.rightMargin: actualX(20)
-                Layout.topMargin: actualY(40)
-                Layout.bottomMargin: actualY(20)
-                Rectangle{
-                    Layout.fillWidth: true
-                    height: actualY(85)
-                    radius: actualY(85)
-                    color: "#045699"
-                    Text{
-                        anchors.fill: parent
-                        verticalAlignment: Text.AlignVCenter
-                        horizontalAlignment: Text.AlignHCenter
-                        font.pixelSize: actualX(36)
-                        color: "#ffffff"
-                        text: qsTr("确认")
-                    }
-                    MouseArea{
-                        anchors.fill: parent
-                        onReleased: {
-                            settings.isPageAndDataSame = isPageAndDataSame.checked
-                            if(isPageAndDataSame.checked){
-                                settings.pageServerUrl = autoFixUrl(pageServerUrl.displayText);
-                                settings.dataServerUrl = autoFixUrl(pageServerUrl.displayText);
-                            }else{
-                                settings.pageServerUrl = autoFixUrl(pageServerUrl.displayText);
-                                settings.dataServerUrl = autoFixUrl(dataServerUrl.displayText);
-                            }
-                            settingsDialog.close();
-                            naviPage()
-                        }
-                    }
+            MouseArea{
+                anchors.fill: parent
+                onReleased: {
+                    settingsDialog.close();
                 }
-
-                Rectangle{
-                    Layout.fillWidth: true
-                    height: actualY(85)
-                    radius: actualY(85)
-                    color: "#dcdddd"
-                    Text{
-                        anchors.fill: parent
-                        verticalAlignment: Text.AlignVCenter
-                        horizontalAlignment: Text.AlignHCenter
-                        font.pixelSize: actualX(36)
-                        color: "#333333"
-                        text: qsTr("取消")
-                    }
-                    MouseArea{
-                        anchors.fill: parent
-                        onReleased: {
-                            settingsDialog.close();
-                        }
-                    }
-                }
-            }//end of settingButtons RowLayout
-        }//end of ColumnLayout
+            }
+        }//end of cancel button
     }//end of settings dialog
 
     Popup {
@@ -574,12 +594,16 @@ ApplicationWindow {
         x: Math.round((rootWindow.width - width) / 2)
         y: Math.round(rootWindow.height / 6)
         width: actualX(620)
-        contentHeight: accountColumn.height
+        height:  actualY(40+40+50+85+60+85+50+85+40+85)
         modal: true
         focus: true
         background: Rectangle {
             anchors.fill: parent
             border.width: 0
+            color: "transparent"
+        }
+        Rectangle {
+            anchors.fill: parent
             color: "#ffffff"
             radius: actualX(30)
         }
@@ -589,177 +613,183 @@ ApplicationWindow {
             //usrPswd.text = settings.usrPswd
             //////end testing
         }
-        ColumnLayout {
-            id: accountColumn
-            x: actualX(-12)
-            y: actualY(-12)
-            width: actualX(620)
-            spacing: 0
-            Text{
-                height: actualY(40)
+        Text{
+            id: accountTitle
+            anchors.top: parent.top
+            anchors.topMargin: actualY(40)
+            anchors.left: parent.left
+            anchors.leftMargin: actualX(50)
+            anchors.right: parent.right
+            anchors.rightMargin: actualX(50)
+            height: actualY(40)
+            color: "#333333"
+            font.pixelSize: actualY(36)
+            text: qsTr("用户登录")
+            horizontalAlignment: Text.AlignHCenter
+            verticalAlignment: Text.AlignVCenter
+        }
+        Rectangle{
+            id: accountUsrNameFrame
+            anchors.top: accountTitle.bottom
+            anchors.topMargin: actualY(50)
+            anchors.left: accountTitle.left
+            anchors.right: accountTitle.right
+            height: actualY(85)
+            radius: actualY(85)
+            border.color: "#333333"
+            border.width: 1
+            clip: true
+            TextInput{
+                id: usrName
                 color: "#333333"
-                font.pixelSize: actualX(36)
-                text: qsTr("用户登录")
-                horizontalAlignment: Text.AlignHCenter
-                Layout.topMargin: actualY(40)
-                Layout.fillWidth: true
-            }
-            Rectangle{
-                height: actualY(85)
-                radius: actualY(85)
-                Layout.topMargin: actualY(40)
-                Layout.leftMargin: actualX(20)
-                Layout.rightMargin: actualX(20)
-                Layout.fillWidth: true
-                border.color: "#333333"
-                border.width: 1
-                clip: true
-                TextInput{
-                    id: usrName
-                    color: "#333333"
-                    font.pixelSize: actualX(32)
-                    horizontalAlignment: Text.AlignLeft
-                    verticalAlignment: Text.AlignVCenter
-                    anchors.left: parent.left
-                    anchors.leftMargin: actualX(40)
-                    anchors.right:parent.right
-                    anchors.rightMargin: actualX(80)
-                    anchors.verticalCenter: parent.verticalCenter
-                    wrapMode: TextInput.NoWrap
-                    Label {
-                        visible: usrName.text===""
-                        anchors.verticalCenter: parent.verticalCenter
-                        anchors.horizontalCenter: parent.horizontalCenter
-                        text: qsTr("请输入用户名")
-                        color: "#999999"
-                        font.pixelSize: actualX(25)
-                    }
-                }
-                Image {
-                    anchors.right: parent.right
-                    anchors.rightMargin: actualX(40)
-                    anchors.verticalCenter: parent.verticalCenter
-                    height: parent.height * 0.5
-                    fillMode: Image.PreserveAspectFit
-                    source: "qrc:/images/icons/usrNameTip.png"
-                }
-            }//end of Rectangle usrName
-            Rectangle{
-                height: actualY(85)
-                radius: actualY(85)
-                Layout.topMargin: actualY(55)
-                Layout.leftMargin: actualX(20)
-                Layout.rightMargin: actualX(20)
-                Layout.fillWidth: true
-                border.color: "#333333"
-                border.width: 1
-                clip: true
-                TextInput{
-                    id: usrPswd
-                    color: "#333333"
-                    font.pixelSize: actualX(32)
-                    horizontalAlignment: Text.AlignLeft
-                    verticalAlignment: Text.AlignVCenter
-                    anchors.left: parent.left
-                    anchors.leftMargin: actualX(40)
-                    anchors.right:parent.right
-                    anchors.rightMargin: actualX(80)
-                    anchors.verticalCenter: parent.verticalCenter
-                    wrapMode: TextInput.NoWrap
-                    echoMode: TextInput.PasswordEchoOnEdit
-                    Label {
-                        visible: usrPswd.text===""
-                        anchors.verticalCenter: parent.verticalCenter
-                        anchors.horizontalCenter: parent.horizontalCenter
-                        text: qsTr("请输入密码")
-                        color: "#999999"
-                        font.pixelSize: actualX(25)
-                    }
-                }
-                Image {
-                    anchors.right: parent.right
-                    anchors.rightMargin: actualX(40)
-                    anchors.verticalCenter: parent.verticalCenter
-                    height: parent.height * 0.5
-                    fillMode: Image.PreserveAspectFit
-                    source: "qrc:/images/icons/pswdTip.png"
-                }
-            }//end of Rectangle usrPswd
-            RowLayout {
-                height: actualY(40)
-                Layout.leftMargin: actualX(20)
-                Layout.topMargin: actualY(40)
-                CheckBox{
-                    id: isAutoLogInFor15Days
-                    Layout.fillHeight: true
-                    Component.onCompleted: {
-                        //initial the form
-                        checked = settings.isPageAndDataSame
-                        onCheckedChanged()
-                    }
-                }
+                font.pixelSize: actualX(32)
+                horizontalAlignment: Text.AlignLeft
+                verticalAlignment: Text.AlignVCenter
+                anchors.left: parent.left
+                anchors.leftMargin: actualX(40)
+                anchors.right:parent.right
+                anchors.rightMargin: actualX(80)
+                anchors.verticalCenter: parent.verticalCenter
+                wrapMode: TextInput.NoWrap
                 Label {
-                    text: qsTr("自动登录(15天)")
-                    Layout.fillHeight: true
-                    font.pixelSize: actualX(32)
-                    color: "#333333"
-                    horizontalAlignment: Text.AlignLeft
+                    visible: usrName.text===""
+                    anchors.verticalCenter: parent.verticalCenter
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    text: qsTr("请输入用户名")
+                    color: "#999999"
+                    font.pixelSize: actualY(25)
                 }
             }
-            RowLayout{
-                id:accountButtons
-                spacing: actualX(40)
-                Layout.leftMargin: actualX(20)
-                Layout.rightMargin: actualX(20)
-                Layout.topMargin: actualY(40)
-                Layout.bottomMargin: actualY(20)
-                Rectangle{
-                    Layout.fillWidth: true
-                    height: actualY(85)
-                    radius: actualY(85)
-                    color: "#045699"
-                    Text{
-                        anchors.fill: parent
-                        verticalAlignment: Text.AlignVCenter
-                        horizontalAlignment: Text.AlignHCenter
-                        font.pixelSize: actualX(36)
-                        color: "#ffffff"
-                        text: qsTr("确认")
-                    }
-                    MouseArea{
-                        anchors.fill: parent
-                        onReleased: {
-                            settings.usrName = usrName.text;
-                            if(settings.usrPswd != usrPswd.text){
-                                settings.usrPswd = Qt.md5( Qt.md5(  Qt.md5(usrPswd.text)+usrName.text ) + "1234" );
-                            }
-                            logIn();
-                            accountDialog.close()
-                        }
-                    }
+            Image {
+                anchors.right: parent.right
+                anchors.rightMargin: actualX(30)
+                anchors.verticalCenter: parent.verticalCenter
+                width:  actualX(40)
+                height: actualY(40)
+                fillMode: Image.PreserveAspectFit
+                source: "qrc:/images/icons/usrNameTip.png"
+            }
+        }//end of Rectangle usrName
+        Rectangle{
+            id: accountUsrPswdFrame
+            anchors.top: accountUsrNameFrame.bottom
+            anchors.topMargin: actualY(60)
+            anchors.left: accountUsrNameFrame.left
+            anchors.right: accountUsrNameFrame.right
+            height: actualY(85)
+            radius: actualY(85)
+            border.color: "#333333"
+            border.width: 1
+            clip: true
+            TextInput{
+                id: usrPswd
+                color: "#333333"
+                font.pixelSize: actualX(32)
+                horizontalAlignment: Text.AlignLeft
+                verticalAlignment: Text.AlignVCenter
+                anchors.left: parent.left
+                anchors.leftMargin: actualX(40)
+                anchors.right:parent.right
+                anchors.rightMargin: actualX(80)
+                anchors.verticalCenter: parent.verticalCenter
+                wrapMode: TextInput.NoWrap
+                echoMode: TextInput.PasswordEchoOnEdit
+                Label {
+                    visible: usrPswd.text===""
+                    anchors.verticalCenter: parent.verticalCenter
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    text: qsTr("请输入密码")
+                    color: "#999999"
+                    font.pixelSize: actualY(25)
                 }
-
-                Rectangle{
-                    Layout.fillWidth: true
-                    height: actualY(85)
-                    radius: actualY(85)
-                    color: "#dcdddd"
-                    Text{
-                        anchors.fill: parent
-                        verticalAlignment: Text.AlignVCenter
-                        horizontalAlignment: Text.AlignHCenter
-                        font.pixelSize: actualX(36)
-                        color: "#333333"
-                        text: qsTr("取消")
-                    }
-                    MouseArea{
-                        anchors.fill: parent
-                        onReleased: {
-                            accountDialog.close()
-                        }
-                    }
+            }
+            Image {
+                anchors.right: parent.right
+                anchors.rightMargin: actualX(30)
+                anchors.verticalCenter: parent.verticalCenter
+                width:  actualX(40)
+                height: actualY(40)
+                fillMode: Image.PreserveAspectFit
+                source: "qrc:/images/icons/pswdTip.png"
+            }
+        }//end of Rectangle usrPswd
+        RowLayout {
+            id: accountAutoLogInFrame
+            anchors.top: accountUsrPswdFrame.bottom
+            anchors.topMargin: actualY(50)
+            anchors.left: accountUsrPswdFrame.left
+            anchors.right: accountUsrPswdFrame.right
+            height: actualY(85)
+            clip: true
+            CheckBox{
+                id: isAutoLogInFor15Days
+                Layout.fillHeight: true
+                Component.onCompleted: {
+                    //initial the form
+                    checked = settings.isPageAndDataSame
+                    onCheckedChanged()
                 }
-            }//end of accountButtons RowLayout
-        }//end of accountColumn
+            }
+            Label {
+                text: qsTr("自动登录(15天)")
+                Layout.fillHeight: true
+                Layout.fillWidth: true
+                font.pixelSize: actualY(32)
+                color: "#333333"
+                horizontalAlignment: Text.AlignLeft
+                verticalAlignment: Text.AlignVCenter
+            }
+        }
+        Image{
+            width: actualX(310)
+            height: actualY(85)
+            anchors.top: accountAutoLogInFrame.bottom
+            anchors.topMargin: actualY(40)
+            anchors.left: parent.left
+            anchors.right: accountAutoLogInFrame.horizontalCenter
+            source: "qrc:/images/icons/PushButtonOK.png"
+            Text{
+                anchors.fill: parent
+                verticalAlignment: Text.AlignVCenter
+                horizontalAlignment: Text.AlignHCenter
+                font.pixelSize: actualY(36)
+                color: "#333333"
+                text: qsTr("确认")
+            }
+            MouseArea{
+                anchors.fill: parent
+                onReleased: {
+                    settings.usrName = usrName.text;
+                    if(settings.usrPswd != usrPswd.text){
+                        settings.usrPswd = Qt.md5( Qt.md5(  Qt.md5(usrPswd.text)+usrName.text ) + "1234" );
+                    }
+                    logIn();
+                    accountDialog.close()
+                }
+            }
+        }
+        Image{
+            width: actualX(310)
+            height: actualY(85)
+            anchors.top: accountAutoLogInFrame.bottom
+            anchors.topMargin: actualY(40)
+            anchors.left: accountAutoLogInFrame.horizontalCenter
+            anchors.right: parent.right
+            source: "qrc:/images/icons/PushButtonCancel.png"
+            Text{
+                anchors.fill: parent
+                verticalAlignment: Text.AlignVCenter
+                horizontalAlignment: Text.AlignHCenter
+                font.pixelSize: actualY(36)
+                color: "#333333"
+                text: qsTr("取消")
+            }
+            MouseArea{
+                anchors.fill: parent
+                onReleased: {
+                    accountDialog.close()
+                }
+            }
+        }//end of cancel button
     }//end of dialog account
 }

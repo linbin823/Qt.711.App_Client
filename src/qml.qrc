@@ -9,8 +9,6 @@
         <file>images/icons/back.png</file>
         <file>qml_local/PageError.qml</file>
         <file>images/icons/usrNameTip.png</file>
-        <file>images/icons/RTTableMore_p.png</file>
-        <file>images/icons/RTTableMore.png</file>
         <file>images/icons/pswdTip.png</file>
         <file>images/icons/menuUpdate.png</file>
         <file>images/icons/menuSetting.png</file>
@@ -19,5 +17,7 @@
         <file>qml_local/userMgr.js</file>
         <file>images/splash/splash.png</file>
         <file>images/icons/menuBg.png</file>
+        <file>images/icons/PushButtonOK.png</file>
+        <file>images/icons/PushButtonCancel.png</file>
     </qresource>
 </RCC>
