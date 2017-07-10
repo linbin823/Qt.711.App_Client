@@ -20,16 +20,16 @@ ApplicationWindow {
     property string currenTitle     : qsTr("数据中心")
 
     property int    originPixelWidth: 720
-    property int    originPixelHeight: 1080
+    property int    originPixelHeight: 1280
     width:  originPixelWidth
     height: originPixelHeight
     //quick function to caculate origin pixel x or origin pixel width to actual x or actual width
     function actualX(absX){
-        return width/originPixelWidth*absX
+        return appWindow.width/originPixelWidth*absX
     }
     //quick function to caculate origin pixel y or origin pixel height to actual y or actual height
     function actualY(absY){
-        return height/originPixelHeight*absY
+        return appWindow.height/originPixelHeight*absY
     }
 
     function logIn(){
@@ -255,18 +255,17 @@ ApplicationWindow {
         id: optionsMenu
         x:  appWindow.width - width - actualX(12)
         y:  tools.height + actualY(12)
-        width: actualX(270)
-        height:actualY(330)
+        width: actualX(280)
+        height:actualY(359)
         transformOrigin: Item.TopRight
-        background: Rectangle {
+        background: Image {
             anchors.fill: parent
-            border.width: 0
-            color:  "#353535"
-            radius: actualX(16)
+            source: "qrc:/images/icons/menuBg.png"
+            fillMode: Image.Stretch
         }
         ListView{
-            x: actualX(-12)
-            y: actualY(-12)
+            x: actualX(-12+5)
+            y: actualY(-12+19)
             width: actualX(270)
             height:actualY(330)
             model:ListModel{
@@ -402,11 +401,12 @@ ApplicationWindow {
                 }
             }
             Rectangle{
-                width: actualX(540)
                 height: 1
                 color: "#333333"
-                anchors.horizontalCenter: parent.horizontalCenter
                 Layout.topMargin: actualY(20)
+                Layout.leftMargin: actualX(40)
+                Layout.rightMargin: actualX(40)
+                Layout.fillWidth: true
             }
             RowLayout {
                 height: actualY(40)
@@ -423,9 +423,11 @@ ApplicationWindow {
                     }
                     onCheckedChanged: {
                         if(checked){
-                            dataServerUrlSettings.visible = false
+                            dataServerUrlLabel.visible = false
+                            dataServerUrl.visible = false
                         }else{
-                            dataServerUrlSettings.visible = true
+                            dataServerUrlLabel.visible = true
+                            dataServerUrl.visible = true
                         }
                     }
                 }
@@ -438,72 +440,73 @@ ApplicationWindow {
                 }
             }
             Rectangle{
-                width: actualX(540)
                 height: 1
                 color: "#333333"
-                anchors.horizontalCenter: parent.horizontalCenter
                 Layout.topMargin: actualY(20)
+                Layout.leftMargin: actualX(40)
+                Layout.rightMargin: actualX(40)
+                Layout.fillWidth: true
             }
-            RowLayout {
-                id: pageServerUrlSettings
+            Label {
+                text: qsTr("页面服务器地址:")
                 height: actualY(40)
                 Layout.leftMargin: actualX(40)
                 Layout.rightMargin: actualX(40)
                 Layout.topMargin: actualY(20)
-
-                Label {
-                    text: qsTr("页面服务器地址:")
-                    Layout.fillHeight: true
-                    font.pixelSize: actualX(32)
-                    color: "#333333"
-                    horizontalAlignment: Text.AlignHCenter
-                }
-                TextInput{
-                    id: pageServerUrl
-                    clip: true
-                    text : settings.pageServerUrl
-                    Layout.fillHeight: true
-                    Layout.fillWidth:  true
-                    font.pixelSize: actualX(32)
-                    color: "#333333"
-                    horizontalAlignment: Text.AlignLeft
-                    verticalAlignment: Text.AlignVCenter
-                    wrapMode: TextInput.WrapAnywhere
-                }
+                Layout.fillWidth:  true
+                font.pixelSize: actualX(32)
+                color: "#333333"
+                horizontalAlignment: Text.AlignLeft
+            }
+            TextInput{
+                id: pageServerUrl
+                clip: true
+                text : settings.pageServerUrl
+                height: actualY(40)
+                Layout.leftMargin: actualX(40)
+                Layout.rightMargin: actualX(40)
+                Layout.topMargin: actualY(20)
+                Layout.fillWidth:  true
+                font.pixelSize: actualX(32)
+                color: "#333333"
+                horizontalAlignment: Text.AlignLeft
+                verticalAlignment: Text.AlignVCenter
+                wrapMode: TextInput.WrapAnywhere
             }
             Rectangle{
-                width: actualX(540)
                 height: 1
                 color: "#333333"
-                anchors.horizontalCenter: parent.horizontalCenter
                 Layout.topMargin: actualY(20)
+                Layout.leftMargin: actualX(40)
+                Layout.rightMargin: actualX(40)
+                Layout.fillWidth: true
             }
-            RowLayout {
-                id: dataServerUrlSettings
+            Label {
+                id: dataServerUrlLabel
+                text: qsTr("数据服务器地址:")
                 height: actualY(40)
                 Layout.leftMargin: actualX(40)
                 Layout.rightMargin: actualX(40)
                 Layout.topMargin: actualY(20)
-
-                Label {
-                    text: qsTr("数据服务器地址:")
-                    Layout.fillHeight: true
-                    font.pixelSize: actualX(32)
-                    color: "#333333"
-                    horizontalAlignment: Text.AlignHCenter
-                }
-                TextInput{
-                    id: dataServerUrl
-                    clip: true
-                    text : settings.dataServerUrl
-                    Layout.fillHeight: true
-                    Layout.fillWidth:  true
-                    font.pixelSize: actualX(32)
-                    color: "#333333"
-                    horizontalAlignment: Text.AlignLeft
-                    verticalAlignment: Text.AlignVCenter
-                    wrapMode: TextInput.WrapAnywhere
-                }
+                Layout.fillWidth:  true
+                font.pixelSize: actualX(32)
+                color: "#333333"
+                horizontalAlignment: Text.AlignLeft
+            }
+            TextInput{
+                id: dataServerUrl
+                clip: true
+                text : settings.dataServerUrl
+                height: actualY(40)
+                Layout.leftMargin: actualX(40)
+                Layout.rightMargin: actualX(40)
+                Layout.topMargin: actualY(20)
+                Layout.fillWidth:  true
+                font.pixelSize: actualX(32)
+                color: "#333333"
+                horizontalAlignment: Text.AlignLeft
+                verticalAlignment: Text.AlignVCenter
+                wrapMode: TextInput.WrapAnywhere
             }
             RowLayout{
                 id:settingButtons
@@ -693,13 +696,6 @@ ApplicationWindow {
                         //initial the form
                         checked = settings.isPageAndDataSame
                         onCheckedChanged()
-                    }
-                    onCheckedChanged: {
-                        if(checked){
-                            dataServerUrlSettings.visible = false
-                        }else{
-                            dataServerUrlSettings.visible = true
-                        }
                     }
                 }
                 Label {
