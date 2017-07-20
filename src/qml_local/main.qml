@@ -453,7 +453,7 @@ ApplicationWindow {
                 }
             }
             Label {
-                text: qsTr("页面服务器和数据服务器地址相同")
+                text: qsTr("页面和数据服务器地址相同")
                 Layout.fillHeight: true
                 Layout.fillWidth: true
                 font.pixelSize: actualX(32)
