@@ -511,7 +511,7 @@ ApplicationWindow {
             anchors.left: pageServerUrl.left
             anchors.right: pageServerUrl.right
             height: actualY(50)
-            text: qsTr("页面服务器地址:")
+            text: qsTr("数据服务器地址:")
             font.pixelSize: actualX(32)
             color: "#333333"
             horizontalAlignment: Text.AlignLeft
